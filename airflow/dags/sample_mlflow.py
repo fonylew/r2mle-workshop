@@ -5,7 +5,7 @@ from mlflow_provider.operators.registry import CreateRegisteredModelOperator
 
 # Adjust these parameters
 EXPERIMENT_ID = 1
-# ARTIFACT_BUCKET = "bucket"
+ARTIFACT_BUCKET = "bucket"
 
 ## MLFlow parameters
 MLFLOW_CONN_ID = "mlflow_default"
