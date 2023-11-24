@@ -1,6 +1,7 @@
+import pandas as pd
+
 from airflow.decorators import dag, task
 from pendulum import datetime
-from astro.dataframes.pandas import DataFrame
 from mlflow_provider.hooks.client import MLflowClientHook
 from mlflow_provider.operators.registry import CreateRegisteredModelOperator
 
