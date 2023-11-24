@@ -5,7 +5,7 @@ from mlflow_provider.operators.registry import CreateRegisteredModelOperator
 
 # Adjust these parameters
 EXPERIMENT_ID = 1
-ARTIFACT_BUCKET = "bucket"
+ARTIFACT_BUCKET = "/opt/bitnami/airflow"
 
 ## MLFlow parameters
 MLFLOW_CONN_ID = "mlflow_default"
@@ -16,6 +16,10 @@ REGISTERED_MODEL_NAME = "my_model"
 @dag(
     schedule=None,
     start_date=datetime(2023, 1, 1),
+    default_args={
+        "mlflow_conn_id": MLFLOW_CONN_ID
+    },
+    default_view="graph",
     catchup=False,
 )
 def mlflow_tutorial_dag():
@@ -32,11 +36,12 @@ def mlflow_tutorial_dag():
             endpoint="api/2.0/mlflow/experiments/create",
             request_params={
                 "name": ts + "_" + experiment_name,
-                # "artifact_location": f"file://{artifact_bucket}/",
+                "artifact_location": f"file://{artifact_bucket}/",
             },
         ).json()
 
         return new_experiment_information
+
 
     # 2. Use mlflow.sklearn autologging in a TaskFlow task
     @task
@@ -63,6 +68,7 @@ def mlflow_tutorial_dag():
             mlflow.log_metrics(pd.DataFrame(scaler.mean_, index=X.columns)[0].to_dict())
 
         X[target] = y
+
 
     # 3. Use an operator from the MLFlow provider to interact with MLFlow directly
     create_registered_model = CreateRegisteredModelOperator(
