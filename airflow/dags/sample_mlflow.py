@@ -1,5 +1,3 @@
-import pandas as pd
-
 from airflow.decorators import dag, task
 from pendulum import datetime
 from mlflow_provider.hooks.client import MLflowClientHook
