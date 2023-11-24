@@ -4,12 +4,12 @@ from mlflow_provider.hooks.client import MLflowClientHook
 from mlflow_provider.operators.registry import CreateRegisteredModelOperator
 
 # Adjust these parameters
-EXPERIMENT_ID = 1
+EXPERIMENT_ID = 2
 ARTIFACT_BUCKET = "/opt/bitnami/airflow"
 
 ## MLFlow parameters
 MLFLOW_CONN_ID = "mlflow_default"
-EXPERIMENT_NAME = "Housing"
+EXPERIMENT_NAME = "CAL_Housing"
 REGISTERED_MODEL_NAME = "my_model"
 
 
