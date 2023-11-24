@@ -170,7 +170,8 @@ initContainers: []
 ##
 extraVolumeMounts: 
   - name: requirements
-    mountPath: /bitnami/python/
+    mountPath: /bitnami/python/requirements.txt
+    subPath: requirements.txt
 ## @param extraVolumes Optionally specify extra list of additional volumes for the all the Airflow pods
 ##
 extraVolumes:
@@ -430,10 +431,16 @@ web:
   initContainers: []
   ## @param web.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the Airflow web pods
   ##
-  extraVolumeMounts: []
-  ## @param web.extraVolumes Optionally specify extra list of additional volumes for the Airflow web pods
+  extraVolumeMounts: 
+  - name: requirements
+    mountPath: /bitnami/python/requirements.txt
+    subPath: requirements.txt
+  ## @param extraVolumes Optionally specify extra list of additional volumes for the all the Airflow pods
   ##
-  extraVolumes: []
+  extraVolumes:
+    - name: requirements
+      configMap:
+        name: requirements
   ## Airflow web Pod Disruption Budget
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
   ## @param web.pdb.create Deploy a pdb object for the Airflow web pods
@@ -646,7 +653,8 @@ scheduler:
   ##
   extraVolumeMounts: 
   - name: requirements
-    mountPath: /bitnami/python/
+    mountPath: /bitnami/python/requirements.txt
+    subPath: requirements.txt
   ## @param extraVolumes Optionally specify extra list of additional volumes for the all the Airflow pods
   ##
   extraVolumes:
@@ -913,7 +921,8 @@ worker:
   ##
   extraVolumeMounts: 
   - name: requirements
-    mountPath: /bitnami/python/
+    mountPath: /bitnami/python/requirements.txt
+    subPath: requirements.txt
   ## @param extraVolumes Optionally specify extra list of additional volumes for the all the Airflow pods
   ##
   extraVolumes:

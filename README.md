@@ -42,7 +42,21 @@ Ref: [charts/bitnami/mlflow at main · bitnami/charts (github.com)](https://gith
 
 #### Getting username and password
 ```bash
-echo Username: $(kubectl get secret --namespace mlflow mlflow-tracking -o jsonpath="{ .data.admin-user }" | base64 -d)
-echo Password: $(kubectl get secret --namespace mlflow mlflow-tracking -o jsonpath="{.data.admin-password }" | base64 -d)
+echo mlflow Username: $(kubectl get secret --namespace mlflow mlflow-tracking -o jsonpath="{ .data.admin-user }" | base64 -d)
+echo mlflow Password: $(kubectl get secret --namespace mlflow mlflow-tracking -o jsonpath="{ .data.admin-password }" | base64 -d)
 ```
 
+```bash
+echo minio Username: $(kubectl get secret --namespace mlflow mlflow-minio -o jsonpath="{ .data.root-user }" | base64 -d)
+echo minio Password: $(kubectl get secret --namespace mlflow mlflow-minio -o jsonpath="{ .data.root-password }" | base64 -d)
+```
+
+#### Port forwarding to access the Minio UI
+```bash
+kubectl port-forward --namespace mlflow svc/mlflow-minio 9001:9001 &
+    echo "Minio URL: http://127.0.0.1:9001"
+```
+
+## Reference
+- https://github.com/astronomer/airflow-provider-mlflow/tree/main/example_dags 
+- https://docs.astronomer.io/learn/airflow-mlflow 
