@@ -62,6 +62,7 @@ def mlflow_tutorial_dag():
 
         scaler = StandardScaler()
 
+        mlflow.set_tracking_uri(f"file://{ARTIFACT_BUCKET}")
         with mlflow.start_run(experiment_id=experiment_id, run_name="Scaler") as run:
             X = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
             mlflow.sklearn.log_model(scaler, artifact_path="scaler")
