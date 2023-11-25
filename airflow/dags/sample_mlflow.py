@@ -1,4 +1,5 @@
 from airflow.decorators import dag, task
+from airflow.hooks.base import BaseHook
 from pendulum import datetime
 from mlflow_provider.hooks.client import MLflowClientHook
 from mlflow_provider.operators.registry import CreateRegisteredModelOperator
@@ -11,6 +12,8 @@ ARTIFACT_BUCKET = "/opt/bitnami/airflow"
 MLFLOW_CONN_ID = "mlflow_default"
 EXPERIMENT_NAME = "CAL_Housing"
 REGISTERED_MODEL_NAME = "my_model"
+
+conn = BaseHook.get_connection(MLFLOW_CONN_ID)
 
 
 @dag(
@@ -53,9 +56,9 @@ def mlflow_tutorial_dag():
         import os
         import pandas as pd
 
-        os.environ["MLFLOW_TRACKING_URI"] = "{{ conn.mlflow_default.host }}"
-        os.environ["MLFLOW_TRACKING_USERNAME"] = "{{ conn.mlflow_default.login }}"
-        os.environ["MLFLOW_TRACKING_PASSWORD"] = "{{ conn.mlflow_default.password }}"
+        os.environ["MLFLOW_TRACKING_URI"] = conn.host
+        os.environ["MLFLOW_TRACKING_USERNAME"] = conn.login
+        os.environ["MLFLOW_TRACKING_PASSWORD"] = conn.password
 
         df = fetch_california_housing(download_if_missing=True, as_frame=True).frame
 
@@ -67,7 +70,7 @@ def mlflow_tutorial_dag():
 
         scaler = StandardScaler()
 
-        mlflow.set_tracking_uri("{{ conn.mlflow_default.host }}")
+        mlflow.set_tracking_uri(conn.host)
         with mlflow.start_run(experiment_id=experiment_id, run_name="Scaler") as run:
             X = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
             mlflow.sklearn.log_model(scaler, artifact_path="scaler")
