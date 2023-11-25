@@ -5,12 +5,12 @@ from mlflow_provider.hooks.client import MLflowClientHook
 from mlflow_provider.operators.registry import CreateRegisteredModelOperator
 
 # Adjust these parameters
-EXPERIMENT_ID = 4
+EXPERIMENT_ID = 5
 ARTIFACT_BUCKET = "/opt/bitnami/airflow"
 
 ## MLFlow parameters
 MLFLOW_CONN_ID = "mlflow_default"
-EXPERIMENT_NAME = "CAL_Housing"
+EXPERIMENT_NAME = "Housing"
 REGISTERED_MODEL_NAME = "my_model"
 
 conn = BaseHook.get_connection(MLFLOW_CONN_ID)
@@ -39,7 +39,7 @@ def mlflow_tutorial_dag():
             endpoint="api/2.0/mlflow/experiments/create",
             request_params={
                 "name": ts + "_" + experiment_name,
-                "artifact_location": f"file://{artifact_bucket}/",
+                # "artifact_location": f"file://{artifact_bucket}/",
             },
         ).json()
 
